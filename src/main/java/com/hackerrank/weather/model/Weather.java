@@ -1,11 +1,28 @@
 package com.hackerrank.weather.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
-public class Weather {
+@Entity
+public class Weather implements Serializable, Comparable<Weather> {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @JsonProperty("date")
+    @Temporal(TemporalType.DATE)
     private Date dateRecorded;
+    @Embedded
     private Location location;
+    @Column(length = 512)
     private Float[] temperature;
 
     public Weather() {
@@ -48,5 +65,10 @@ public class Weather {
 
     public void setTemperature(Float[] temperature) {
         this.temperature = temperature;
+    }
+    
+    @Override
+    public int compareTo(Weather o) {
+        return this.getId().compareTo(o.getId());
     }
 }

@@ -1,9 +1,18 @@
 package com.hackerrank.weather.model;
 
-public class Location {
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.Serializable;
+import javax.persistence.Embeddable;
+
+@Embeddable
+public class Location implements Serializable {
+    @JsonProperty("city")
     private String cityName;
+    @JsonProperty("state")
     private String stateName;
+    @JsonProperty("lat")
     private Float latitude;
+    @JsonProperty("lon")
     private Float longitude;
 
     public Location() {
