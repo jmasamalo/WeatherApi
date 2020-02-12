@@ -20,12 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class WeatherApiRestController {
     @Autowired
     WeatherRepository weatherRepository;
-    
-    @Autowired
-    public WeatherApiRestController(WeatherRepository weatherRepository) {
-        this.weatherRepository = weatherRepository;
-    }
-   
+
     //#1. delete all weather data
     @DeleteMapping("/erase")
     public void deleteAll() {
