@@ -1,7 +1,7 @@
-package com.hackerrank.weather.controller;
+package com.jlm.weather.controller;
 
-import com.hackerrank.weather.model.Weather;
-import com.hackerrank.weather.repository.WeatherRepository;
+import com.jlm.weather.model.Weather;
+import com.jlm.weather.repository.WeatherRepository;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;

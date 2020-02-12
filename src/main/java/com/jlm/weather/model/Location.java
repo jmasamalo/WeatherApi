@@ -1,4 +1,4 @@
-package com.hackerrank.weather.model;
+package com.jlm.weather.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;

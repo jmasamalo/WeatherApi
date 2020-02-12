@@ -1,6 +1,6 @@
-package com.hackerrank.weather.repository;
+package com.jlm.weather.repository;
 
-import com.hackerrank.weather.model.Weather;
+import com.jlm.weather.model.Weather;
 import java.util.Date;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
