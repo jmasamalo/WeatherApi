@@ -4,15 +4,21 @@ import com.hackerrank.weather.model.Weather;
 import java.util.Date;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import javax.transaction.Transactional;
 
 public interface WeatherRepository extends JpaRepository<Weather,Long> {
-    
-    @Query("DELETE FROM Weather w WHERE w.location.latitude=:latitude AND w.location.longitude=:longitude AND w.dateRecorded>=:startDate AND w.dateRecorded<=:endDate")
-    public void eraseData(String startDate, String endDate, double latitude, double longitude);
-    
+    @Transactional
+    @Modifying
+    @Query( value = "DELETE FROM WEATHER WHERE LATITUDE=:latitude AND LONGITUDE=:longitude AND DATE_RECORDED BETWEEN :startDate AND :endDate", nativeQuery = true)
+    public void deleteData(@Param("startDate") Date startDate, @Param("endDate") Date endDate, @Param("latitude") float latitude, @Param("longitude") float longitude);
+    //public void deleteByLocationLatitudeAndLocationLongitudeAndDateRecordedBetween(float latitude, float longitude, Date  startDate, Date endDate);
+
     public List<Weather> findByDateRecorded(Date date);
     
-    public List<Weather> findByLocationLatitudeAndLocationLongitude(double latitude, double longitude);
+    public List<Weather> findByLocationLatitudeAndLocationLongitude(float latitude, float longitude);
    
 }

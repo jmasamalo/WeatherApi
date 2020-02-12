@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class WeatherApiRestController {
-    //@Autowired
+    @Autowired
     WeatherRepository weatherRepository;
     
     @Autowired
@@ -29,16 +29,20 @@ public class WeatherApiRestController {
     //#1. delete all weather data
     @DeleteMapping("/erase")
     public void deleteAll() {
-        weatherRepository.deleteAll();
-    }
+       weatherRepository.deleteAll();
+   }
     
     //#2. delete a specific weather data
-    @DeleteMapping(value="/erase", params="start,end,lat,lon")
-    public void deleteData(@RequestParam("start") String startDate, 
+    @DeleteMapping( value="/erase", params= {"start","end","lat","lon"})
+    public void eraseData(@RequestParam("start") String startDate,
             @RequestParam("end") String endDate, 
-            @RequestParam("lat") double latitude, 
-            @RequestParam("lon") double longitude) {
-        weatherRepository.eraseData(startDate, endDate, latitude, longitude);
+            @RequestParam("lat") float latitude,
+            @RequestParam("lon") float longitude) throws Exception {
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date sDate= dateFormatter.parse(startDate);
+        Date eDate = dateFormatter.parse(endDate);
+        weatherRepository.deleteData(sDate, eDate, latitude, longitude);
+        //weatherRepository.deleteByLocationLatitudeAndLocationLongitudeAndDateRecordedBetween(latitude, longitude, sDate, eDate);
     } 
 
     //#3. add a weather data
@@ -60,7 +64,7 @@ public class WeatherApiRestController {
     }
     
     //#5. return weather data filtered by date
-    @GetMapping(value="/weather", params="date")
+    @GetMapping(value="/weather", params={"date"})
     public ResponseEntity<List<Weather>> getWeatherByDateRecorded(@RequestParam("date") String date) throws Exception {
         SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
         Date dt = dateFormatter.parse(date);
@@ -73,8 +77,8 @@ public class WeatherApiRestController {
     }
     
     //#6. return weather data filtered by location coordinates
-    @GetMapping(value="/weather", params="lat,lon")
-    public ResponseEntity<List<Weather>> getWeatherByCcoordinates(@RequestParam("lat") double latitude, @RequestParam("lon") double longitude) {
+    @GetMapping(value="/weather", params={"lat","lon"})
+    public ResponseEntity<List<Weather>> getWeatherByCcoordinates(@RequestParam("lat") float latitude, @RequestParam("lon") float longitude) {
         List<Weather> data =  weatherRepository.findByLocationLatitudeAndLocationLongitude(latitude, longitude);
         if(data == null || data.isEmpty()) {
             return new ResponseEntity<>(data,HttpStatus.NOT_FOUND);
